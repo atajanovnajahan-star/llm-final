@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="detail-wrapper">
+
+```
+<div class="detail-card">
+
+    <a class="back-link"
+       href="{{ url_for('dashboard') }}">
+       ← Back to Dashboard
+    </a>
+
+    <div class="word-detail-header">
+
+        <div>
+            <p class="eyebrow">Vocabulary Profile</p>
+
+            <h1>{{ word.word }}</h1>
+
+            <p class="phonetic">
+                {{ word.phonetic }}
+            </p>
+        </div>
+
+        <div class="word-badge">
+            {{ word.part_of_speech }}
+        </div>
+
+    </div>
+
+    <div class="detail-block">
+        <h3>Chinese Meaning</h3>
+        <p>{{ word.meaning_cn }}</p>
+    </div>
+
+    <div class="detail-block">
+        <h3>English Definition</h3>
+        <p>{{ word.english_definition }}</p>
+    </div>
+
+    <div class="detail-block">
+        <h3>Authentic Example Sentence</h3>
+        <p>{{ word.example_sentence }}</p>
+    </div>
+
+    <div class="detail-block">
+        <h3>Chinese Translation</h3>
+        <p>{{ word.translation_cn }}</p>
+    </div>
+
+    <div class="detail-block">
+        <h3>Synonyms</h3>
+        <p>{{ word.synonyms }}</p>
+    </div>
+
+    <div class="detail-block">
+        <h3>Antonyms</h3>
+        <p>{{ word.antonyms }}</p>
+    </div>
+
+    <div class="detail-block">
+        <h3>Common Collocations</h3>
+        <p>{{ word.collocations }}</p>
+    </div>
+
+    <div class="detail-block">
+        <h3>Learning Statistics</h3>
+
+        <p>
+            Review Count:
+            <strong>{{ word.review_count }}</strong>
+        </p>
+
+        <p>
+            Added:
+            <strong>{{ word.created_at.strftime('%Y-%m-%d') }}</strong>
+        </p>
+    </div>
+
+    <div class="detail-block">
+        <h3>Source Information</h3>
+
+        <p>
+            <strong>Source:</strong>
+            {{ word.source_name }}
+        </p>
+
+        {% if word.source_url %}
+        <a class="source-link"
+           href="{{ word.source_url }}"
+           target="_blank">
+           Read Original Source →
+        </a>
+        {% endif %}
+    </div>
+
+</div>
+```
+
+</section>
+
+{% endblock %}

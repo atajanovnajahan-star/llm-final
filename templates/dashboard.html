@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="learning-layout">
+
+    <div class="main-learning">
+
+        <section class="search-card">
+            <p class="eyebrow">AI-POWERED VOCABULARY PLATFORM</p>
+
+            <h1>Build Your Personal AI Vocabulary Database</h1>
+
+            <p>
+                Search real-world vocabulary from trusted sources, generate AI explanations,
+                learn synonyms and antonyms, and review your progress with intelligent repetition.
+            </p>
+
+            <form class="word-search" method="POST" action="{{ url_for('add_word') }}">
+                <input
+                    id="wordInput"
+                    type="text"
+                    name="word"
+                    placeholder="Try: sustainable, innovation, artificial intelligence..."
+                    required
+                >
+                <button type="submit">Analyze Word</button>
+            </form>
+        </section>
+
+        <section class="mini-stats">
+            <div>
+                <strong>{{ words|length }}</strong>
+                <span>Saved Words</span>
+            </div>
+
+            <div>
+                <strong>Real</strong>
+                <span>Source Examples</span>
+            </div>
+
+            <div>
+                <strong>AI</strong>
+                <span>Vocabulary Analysis</span>
+            </div>
+        </section>
+
+        <section class="section-title">
+            <div>
+                <h2>Recent Vocabulary</h2>
+                <p>AI-generated vocabulary cards with real example sentences.</p>
+            </div>
+
+            <form class="small-search" method="GET">
+                <input type="text" name="q" value="{{ q }}" placeholder="Search saved words">
+            </form>
+        </section>
+
+        <section class="vocab-grid">
+            {% for word in words %}
+
+            <article class="vocab-card">
+                <div class="word-header">
+                    <div>
+                        <h3>{{ word.word }}</h3>
+                        <p>{{ word.phonetic }}</p>
+                    </div>
+
+                    <span>{{ word.part_of_speech }}</span>
+                </div>
+
+                <p class="meaning-cn">{{ word.meaning_cn }}</p>
+
+                <p class="definition">{{ word.english_definition }}</p>
+
+                <div class="example">
+                    <small>Authentic Example</small>
+                    <p>{{ word.example_sentence }}</p>
+                    <em>{{ word.translation_cn }}</em>
+                </div>
+
+                <div class="meta-list">
+                    <p><strong>Synonyms:</strong> {{ word.synonyms }}</p>
+                    <p><strong>Antonyms:</strong> {{ word.antonyms }}</p>
+                    <p><strong>Source:</strong> {{ word.source_name }}</p>
+                </div>
+
+                <div class="word-footer">
+                    <a href="{{ url_for('word_detail', word_id=word.id) }}">View Details</a>
+
+                    <form method="POST" action="{{ url_for('delete_word', word_id=word.id) }}">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            </article>
+
+            {% else %}
+
+            <div class="empty-state">
+                <h3>No vocabulary yet</h3>
+                <p>Search your first word and let the agent create a complete learning card.</p>
+            </div>
+
+            {% endfor %}
+        </section>
+
+    </div>
+
+    <aside class="tutor-panel">
+
+        <a class="command-card clickable-card" href="{{ url_for('features') }}">
+            <h3>AI Features</h3>
+
+            <div class="flow-line">
+                <span>🤖 LLM Vocabulary Analysis</span>
+                <span>📰 Real Source Search</span>
+                <span>🔍 Example Sentence Extraction</span>
+                <span>💾 Database Storage</span>
+            </div>
+        </a>
+
+        <a class="workflow-card clickable-card" href="{{ url_for('workflow') }}">
+            <h3>Agent Workflow</h3>
+
+            <div class="workflow-list">
+                <span>1. Search Word</span>
+                <span>2. Find Source</span>
+                <span>3. AI Analysis</span>
+                <span>4. Save Card</span>
+            </div>
+        </a>
+
+        <div class="sidebar-card">
+            <h3>Vocabulary Commands</h3>
+
+            <div class="command-grid">
+
+                <a class="command-box" href="#wordInput">
+                    Add Word
+                </a>
+
+                <a class="command-box" href="{{ url_for('dashboard') }}">
+                    Query Words
+                </a>
+
+                <a class="command-box" href="{{ url_for('review') }}">
+                    Review
+                </a>
+
+                <a class="command-box" href="{{ url_for('quiz') }}">
+                    Quiz
+                </a>
+
+            </div>
+        </div>
+
+    </aside>
+
+</section>
+
+{% endblock %}

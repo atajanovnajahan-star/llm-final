@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  <title>Novalingo | AI-Powered Vocabulary Learning</title>
+    <link rel="icon" type="image/png"
+      href="{{ url_for('static', filename='images/-logo.png') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="topbar">
+   <a class="brand" href="{{ url_for('dashboard') }}">
+    <img src="{{ url_for('static', filename='images/Novalingo-logo.png') }}"
+         alt="Novalingo Logo">
+
+    <span>Novalingo</span>
+</a>
+
+    <div class="nav-links">
+        {% if session.get("user_id") %}
+            <a href="{{ url_for('dashboard') }}">Learn</a>
+            <a href="{{ url_for('review') }}">Review</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+        {% endif %}
+    </div>
+</nav>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="flash-box">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

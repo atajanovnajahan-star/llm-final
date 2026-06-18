@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="detail-wrapper">
+    <div class="detail-card">
+
+        <a class="back-link" href="{{ url_for('dashboard') }}">← Back</a>
+
+        <p class="eyebrow">Agent Workflow</p>
+        <h1>Example Search Agent</h1>
+
+        <div class="detail-block">
+            <h3>1. User Input</h3>
+            <p>The user enters a vocabulary word such as “globalization”.</p>
+        </div>
+
+        <div class="detail-block">
+            <h3>2. Source Search</h3>
+            <p>The agent calls Tavily Search to find authentic English source materials.</p>
+        </div>
+
+        <div class="detail-block">
+            <h3>3. Example Extraction</h3>
+            <p>The system extracts a real sentence containing the target word.</p>
+        </div>
+
+        <div class="detail-block">
+            <h3>4. LLM Analysis</h3>
+            <p>Qwen generates phonetics, definitions, translations, synonyms, antonyms and collocations.</p>
+        </div>
+
+        <div class="detail-block">
+            <h3>5. Database Storage</h3>
+            <p>The complete vocabulary entry is saved into SQLite and displayed as a learning card.</p>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

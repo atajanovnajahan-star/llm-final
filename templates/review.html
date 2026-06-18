@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="review-page">
+
+```
+<div class="review-header">
+    <p class="eyebrow">Spaced Repetition Learning</p>
+
+    <h1>Vocabulary Review Center</h1>
+
+    <p>
+        Strengthen your memory by reviewing previously learned vocabulary.
+        Mark words as remembered to improve your learning progress.
+    </p>
+</div>
+
+<div class="review-stats">
+
+    <div class="review-stat-card">
+        <strong>{{ words|length }}</strong>
+        <span>Words Ready For Review</span>
+    </div>
+
+    <div class="review-stat-card">
+        <strong>AI</strong>
+        <span>Smart Learning System</span>
+    </div>
+
+    <div class="review-stat-card">
+        <strong>∞</strong>
+        <span>Unlimited Practice</span>
+    </div>
+
+</div>
+
+<div class="review-grid">
+
+    {% for word in words %}
+
+    <article class="review-card">
+
+        <div class="review-card-header">
+
+            <div>
+                <h2>{{ word.word }}</h2>
+
+                <p class="phonetic">
+                    {{ word.phonetic }}
+                </p>
+            </div>
+
+            <span class="review-badge">
+                {{ word.part_of_speech }}
+            </span>
+
+        </div>
+
+        <p class="meaning-cn">
+            {{ word.meaning_cn }}
+        </p>
+
+        <div class="example">
+            <small>Example Sentence</small>
+
+            <p>{{ word.example_sentence }}</p>
+
+            <em>{{ word.translation_cn }}</em>
+        </div>
+
+        <div class="review-meta">
+
+            <p>
+                <strong>Synonyms:</strong>
+                {{ word.synonyms }}
+            </p>
+
+            <p>
+                <strong>Antonyms:</strong>
+                {{ word.antonyms }}
+            </p>
+
+            <p>
+                <strong>Review Count:</strong>
+                {{ word.review_count }}
+            </p>
+
+        </div>
+
+        <div class="review-actions">
+
+            <a class="review-detail-btn"
+               href="{{ url_for('word_detail', word_id=word.id) }}">
+                View Details
+            </a>
+
+            <form method="POST"
+                  action="{{ url_for('review_done', word_id=word.id) }}">
+                <button type="submit">
+                    ✓ Remembered
+                </button>
+            </form>
+
+        </div>
+
+    </article>
+
+    {% else %}
+
+    <div class="empty-state">
+        <h3>No Vocabulary Available</h3>
+        <p>
+            Search and save vocabulary words before starting review sessions.
+        </p>
+    </div>
+
+    {% endfor %}
+
+</div>
+```
+
+</section>
+
+{% endblock %}

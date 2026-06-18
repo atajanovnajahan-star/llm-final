@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="detail-wrapper">
+    <div class="detail-card quiz-card">
+
+        <a class="back-link" href="{{ url_for('dashboard') }}">← Back</a>
+
+        <p class="eyebrow">Vocabulary Quiz</p>
+
+        <h1>{{ word.word }}</h1>
+
+        <p class="phonetic">{{ word.phonetic }}</p>
+
+        <div class="detail-block">
+            <h3>Question</h3>
+            <p>What does this word mean in Chinese?</p>
+        </div>
+
+        <form method="POST" class="quiz-form">
+            <input
+                type="text"
+                name="answer"
+                placeholder="Write your Chinese answer..."
+                value="{{ user_answer }}"
+                required
+            >
+
+            <button type="submit">Check Answer</button>
+        </form>
+
+        {% if result == "correct" %}
+        <div class="quiz-result correct">
+            <h3>Correct ✅</h3>
+            <p>Your answer matches the meaning.</p>
+        </div>
+        {% endif %}
+
+        {% if result == "wrong" %}
+        <div class="quiz-result wrong">
+            <h3>Not quite ❌</h3>
+            <p><strong>Your answer:</strong> {{ user_answer }}</p>
+            <p><strong>Correct answer:</strong> {{ word.meaning_cn }}</p>
+        </div>
+        {% endif %}
+
+        <div class="detail-block">
+            <h3>Example Sentence</h3>
+            <p>{{ word.example_sentence }}</p>
+            <p>{{ word.translation_cn }}</p>
+        </div>
+
+        <a class="next-quiz" href="{{ url_for('quiz') }}">
+            Next Quiz
+        </a>
+
+    </div>
+</section>
+
+{% endblock %}

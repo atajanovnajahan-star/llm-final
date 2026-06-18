@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="detail-wrapper">
+    <div class="detail-card">
+
+        <a class="back-link" href="{{ url_for('dashboard') }}">← Back</a>
+
+        <p class="eyebrow">AI Features</p>
+        <h1>Novalingo Intelligence</h1>
+
+        <div class="detail-block">
+            <h3>🤖 LLM Vocabulary Analysis</h3>
+            <p>Qwen generates phonetics, Chinese meaning, English definition, synonyms, antonyms, collocations and translations.</p>
+        </div>
+
+        <div class="detail-block">
+            <h3>📰 Real Source Search</h3>
+            <p>Tavily searches authentic English sources and finds real usage examples.</p>
+        </div>
+
+        <div class="detail-block">
+            <h3>🔍 Example Sentence Extraction</h3>
+            <p>The agent extracts a sentence containing the target word and saves the source information.</p>
+        </div>
+
+        <div class="detail-block">
+            <h3>💾 Database Storage</h3>
+            <p>Each generated vocabulary card is stored in the user’s personal database.</p>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

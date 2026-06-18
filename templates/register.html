@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="auth-shell">
+    <div class="auth-copy">
+        <p class="eyebrow">Vocabulary Learning System</p>
+        <h1>Start a cleaner way to learn words.</h1>
+        <p>
+            Save words, collect authentic example sentences, review them later
+            and interact through OpenClaw commands.
+        </p>
+    </div>
+
+    <div class="auth-card">
+        <h2>Create Account</h2>
+        <p>Your vocabulary cards will be stored in your own database.</p>
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email address" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <button type="submit">Create My Vocabulary Space</button>
+        </form>
+
+        <p class="auth-link">
+            Already registered?
+            <a href="{{ url_for('login') }}">Login</a>
+        </p>
+    </div>
+</section>
+
+{% endblock %}

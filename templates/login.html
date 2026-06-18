@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="auth-shell">
+    <div class="auth-copy">
+        <p class="eyebrow">AI Native Final Project</p>
+        <h1>Build your personal English vocabulary brain.</h1>
+        <p>
+            Novalingo uses an Example Search Agent, LLM tutoring and vocabulary review
+            to help students learn English words with real source examples.
+        </p>
+    </div>
+
+    <div class="auth-card">
+        <h2>Login</h2>
+        <p>Continue learning with your saved vocabulary database.</p>
+
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+
+            <button type="submit">Enter Novalingo</button>
+        </form>
+
+        <p class="auth-link">
+            New here?
+            <a href="{{ url_for('register') }}">Create account</a>
+        </p>
+    </div>
+</section>
+
+{% endblock %}
