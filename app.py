@@ -227,9 +227,9 @@ JSON format:
         return json.loads(content)
 
     except Exception as e:
-        print("QWEN ERROR:", e)
+     print("QWEN ERROR:", str(e))
 
-        return {
+    return {
             "phonetic": "",
             "part_of_speech": "",
             "meaning_cn": "AI generation failed. Please check API key.",
@@ -242,22 +242,27 @@ JSON format:
 
 
 def create_word_entry(word, user_id):
+    print("CREATE WORD:", word)
+
     example = search_real_example(word)
-    ai = generate_ai_vocabulary(word, example["sentence"])
+    print("EXAMPLE RESULT:", example)
+
+    ai_data = generate_ai_vocabulary(word, example["sentence"])
+    print("AI DATA:", ai_data)
 
     vocab = Vocabulary(
         word=word,
-        phonetic=ai.get("phonetic", ""),
-        part_of_speech=ai.get("part_of_speech", ""),
-        meaning_cn=ai.get("meaning_cn", ""),
-        english_definition=ai.get("english_definition", ""),
+        phonetic=ai_data.get("phonetic", ""),
+        part_of_speech=ai_data.get("part_of_speech", ""),
+        meaning_cn=ai_data.get("meaning_cn", ""),
+        english_definition=ai_data.get("english_definition", ""),
         example_sentence=example.get("sentence", ""),
-        translation_cn=ai.get("translation_cn", ""),
+        translation_cn=ai_data.get("translation_cn", ""),
         source_name=example.get("source_name", ""),
         source_url=example.get("source_url", ""),
-        synonyms=ai.get("synonyms", ""),
-        antonyms=ai.get("antonyms", ""),
-        collocations=ai.get("collocations", ""),
+        synonyms=ai_data.get("synonyms", ""),
+        antonyms=ai_data.get("antonyms", ""),
+        collocations=ai_data.get("collocations", ""),
         user_id=user_id
     )
 
