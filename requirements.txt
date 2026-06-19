@@ -1,6 +1,7 @@
 Flask
 Flask-SQLAlchemy
+SQLAlchemy
 Werkzeug
 requests
 python-dotenv
-gunicorn
+gunicorn==21.2.0
