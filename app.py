@@ -19,8 +19,10 @@ db = SQLAlchemy(app)
 
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 LLM_API_KEY = os.getenv("LLM_API_KEY")
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 print("TAVILY =", TAVILY_API_KEY)
 print("LLM =", LLM_API_KEY)
+print("TELEGRAM =", TELEGRAM_BOT_TOKEN)
 
 
 class User(db.Model):
@@ -559,6 +561,84 @@ def openclaw_api():
     return jsonify({
         "reply": "Commands: add word, query word, review, quiz"
     })
+def process_agent_message(message, user_id=1):
+    message = message.strip().lower()
+
+    demo_user = User.query.get(user_id)
+
+    if not demo_user:
+        demo_user = User(
+            username="telegram",
+            email="telegram@example.com",
+            password=generate_password_hash("123456")
+        )
+        db.session.add(demo_user)
+        db.session.commit()
+        user_id = demo_user.id
+
+    if message.startswith("add "):
+        word = message.replace("add ", "").strip()
+
+        existing = Vocabulary.query.filter_by(word=word, user_id=user_id).first()
+        if existing:
+            return f"'{word}' already exists.\nMeaning: {existing.meaning_cn}\nExample: {existing.example_sentence}"
+
+        vocab = create_word_entry(word, user_id)
+        return f"Added: {vocab.word}\nMeaning: {vocab.meaning_cn}\nExample: {vocab.example_sentence}\nTranslation: {vocab.translation_cn}\nSource: {vocab.source_name}\nURL: {vocab.source_url}"
+
+    if message.startswith("query "):
+        word_text = message.replace("query ", "").strip()
+        vocab = Vocabulary.query.filter_by(word=word_text, user_id=user_id).first()
+
+        if not vocab:
+            return "Word not found."
+
+        return f"{vocab.word} {vocab.phonetic}\nMeaning: {vocab.meaning_cn}\nExample: {vocab.example_sentence}\nTranslation: {vocab.translation_cn}"
+
+    if message == "review":
+        words = Vocabulary.query.filter_by(user_id=user_id).order_by(Vocabulary.review_count.asc()).limit(5).all()
+
+        if not words:
+            return "No review words."
+
+        return "Review words:\n" + "\n".join([f"- {w.word}: {w.meaning_cn}" for w in words])
+
+    if message == "quiz":
+        word = Vocabulary.query.filter_by(user_id=user_id).order_by(Vocabulary.review_count.asc()).first()
+
+        if not word:
+            return "No quiz available."
+
+        return f"Quiz: What does '{word.word}' mean in Chinese?"
+
+    return "Commands:\nadd word\nquery word\nreview\nquiz"
+
+
+@app.route("/telegram/webhook", methods=["POST"])
+def telegram_webhook():
+    data = request.get_json() or {}
+
+    message_data = data.get("message") or data.get("edited_message") or {}
+    chat = message_data.get("chat", {})
+    chat_id = chat.get("id")
+    text = message_data.get("text", "")
+
+    if not chat_id or not text:
+        return jsonify({"ok": True})
+
+    reply = process_agent_message(text, user_id=1)
+
+    if TELEGRAM_BOT_TOKEN:
+        requests.post(
+            f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage",
+            json={
+                "chat_id": chat_id,
+                "text": reply
+            },
+            timeout=20
+        )
+
+    return jsonify({"ok": True})
 @app.route("/features")
 def features():
     if not is_logged_in():
