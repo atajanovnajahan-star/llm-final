@@ -6,6 +6,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, session, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 from werkzeug.security import generate_password_hash, check_password_hash
 
 load_dotenv()
@@ -626,7 +627,17 @@ def telegram_webhook():
     if not chat_id or not text:
         return jsonify({"ok": True})
 
-    reply = process_agent_message(text, user_id=1)
+    demo_user = User.query.filter_by(username="demo").first()
+    if not demo_user:
+        demo_user = User(
+            username="demo",
+            email="demo@example.com",
+            password=generate_password_hash("123456")
+        )
+        db.session.add(demo_user)
+        db.session.commit()
+
+    reply = process_agent_message(text, user_id=demo_user.id)
 
     if TELEGRAM_BOT_TOKEN:
         requests.post(
